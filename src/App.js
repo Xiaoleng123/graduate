@@ -1,21 +1,30 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import Wuhan from './charts/wuhan';
+import Beijing from './charts/beijing';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
-  }
-}
+const Home = () => (
+  <div>
+    <h2>Home</h2>
+  </div>
+)
 
-export default App;
+
+const BasicExample = () => (
+  <Router>
+    <div>
+      <ul>
+        <li><Link to="/">Home</Link></li>
+        <li><Link to="/wuhan">Wuhan</Link></li>
+        <li><Link to="/beijing">Beijing</Link></li>
+      </ul>
+
+      <hr/>
+
+      <Route exact path="/" component={Home}/>
+      <Route path="/wuhan" component={Wuhan}/>
+      <Route path="/beijing" component={Beijing}/>
+    </div>
+  </Router>
+)
+export default BasicExample
