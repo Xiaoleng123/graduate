@@ -14,7 +14,35 @@ export default class Wuhan extends React.Component{
       chartData: [],
     };
   }
+
+  reqData = (callback) => {
+    fetch('http://localhost:8888/getData/beijing',{
+      method: 'get',
+    }).then(response => {
+      return response.json();
+    }).then(data => {
+      data && this.setState({chartData: data});
+      callback();
+    })
+    // const xhr = new XMLHttpRequest();
+    // xhr.open('GET', 'http://localhost:8888/getData/beijing',true);
+    // xhr.send();
+    // xhr.onreadystatechange = function () {
+    //   if (xhr.readyState === 4) {
+    //     if ( xhr.status === 200) {
+    //       console.log(JSON.parse(xhr.responseText));
+    //     }else {
+    //       console.error(`error status:${xhr.status}`);
+    //     }
+    //   }
+    // };
+  }
+
+  initChart = () => {
+    console.log(this.state.chartData);
+  }
   componentDidMount() {
+    this.reqData(this.initChart);
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('main'));
     // 绘制图表
