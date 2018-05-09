@@ -19,21 +19,31 @@ export default class Wuhan extends React.Component{
       type_count: [],
       chartData: [],
       major: 'business',
+      chart: 'pie',
     };
   }
 
   reqData = (city) => {
-    fetch(`http://localhost:8888/getData/${city}`,{
-      method: 'get',
-    }).then(response => {
-      return response.json();
-    }).then(data => {
-      data && this.setState({chartData: data});
-      this.formatData();
-    })
+    const storage = localStorage.getItem(city);
+    if ( storage !== null ){
+      const {business, type, business_count, type_count} = JSON.parse(storage);
+      this.setState({business, type, business_count, type_count}, () => {
+        this.initChart();
+      });
+    } else {
+      fetch(`http://localhost:8888/getData/${city}`, {
+        method: 'get',
+      }).then(response => {
+        return response.json();
+      }).then(data => {
+        data && this.setState({chartData: data}, () => {
+          this.formatData(city);
+        });
+      })
+    }
   }
 
-  formatData = () => {
+  formatData = (city) => {
     const data = this.state.chartData;
     const business = [];
     const type =[];
@@ -62,52 +72,120 @@ export default class Wuhan extends React.Component{
       type.indexOf(key) >-1 ? type_count.push({type: key, value: obj[key]}) :
       business_count.push({business: key, value: obj[key]});
     }
-    this.setState({business, type, business_count, type_count});
-    this.initChart();
+    this.setState({business, type, business_count, type_count}, () => {
+      this.initChart();
+      localStorage.setItem(city, JSON.stringify({business, type, business_count, type_count}));
+    });
   }
 
   initChart = () => {
     const {
-      type,
-      business,
+      major,
       type_count,
       business_count,
     } = this.state;
-    console.log(business_count);
-    business_count.forEach((e, i) => {
+    const count = major === 'type' ? type_count : business_count;
+    count.forEach((e, i) => {
       const myChart = echarts.init(document.getElementById(`main${i}`));
-      myChart.setOption({
-        title: {
-          text: `${e.business}结构`,
-          subtext: '数据来源-百度地图',
-          sublink:'http://map.baidu.com/',
-        },
-        tooltip: {
-          trigger: 'item',
-          formatter: "{a} <br/>{b} : {c} ({d}%)"
-        },
-        series: [{
-          name: e.business,
-          type: 'pie',
-          radius : '55%',
-          center: ['50%', '60%'],
+      const option = this.getOption(e, major);
+      myChart.setOption(option, {notMerge: true});
+    });
+  }
+
+  getOption = (e, major) => {
+    const {chart} = this.state;
+    let option = {};
+    chart === 'pie' ? 
+    option = {
+      title: {
+        text: `${e[major]}饼状图`,
+        subtext: '数据来源-百度地图',
+        sublink:'http://map.baidu.com/',
+      },
+      tooltip: {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+      },
+      series: [{
+        name: e[major],
+        type: 'pie',
+        radius : '55%',
+        center: ['50%', '60%'],
+        data: (()=>{
+          const arr=[];
+          for (let key in e.value) {
+            arr.push({name: key, value: e.value[key]})
+          }
+          return arr;
+        })(),
+        itemStyle: {
+          emphasis: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
+        }
+      }]
+    } : option = {
+      title: {
+        text: `${e[major]}柱状图`,
+        subtext: '数据来源-百度地图',
+        sublink:'http://map.baidu.com/',
+        x:'center'
+      },
+      color: ['#3398DB'],
+      tooltip: {
+        trigger: 'axis',
+        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+          type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        }
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      xAxis: [
+        {
+          type: 'category',
+          splitNumber: e.value.length,
+          axisLabel: {
+              rotate:45
+          },
+          data: (()=>{
+              const arr=[];
+              for (let key in e.value) {
+                arr.push(key)
+              }
+              return arr;
+          })(),
+          axisTick: {
+              alignWithLabel: true
+          }
+        }
+      ],
+      yAxis: [
+        {
+          type: 'value'
+        }
+      ],
+      series: [
+        {
+          name: e[major],
+          type: 'bar',
+          barWidth: '60%',
           data: (()=>{
             const arr=[];
             for (let key in e.value) {
-              arr.push({name: key, value: e.value[key]})
+              arr.push(e.value[key])
             }
             return arr;
           })(),
-          itemStyle: {
-            emphasis: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
-          }
-        }]
-      })
-    });
+        }
+      ]
+    }
+    return option;
   }
 
   componentDidMount() {
@@ -124,6 +202,8 @@ export default class Wuhan extends React.Component{
     return (
       <div style={{width: '100%', height: '100%', marginTop: '15px'}}>
         {chartDom}
+        <button onClick={() => {this.setState({major: this.state.major === 'business' ? 'type' : 'business'}, () => {this.initChart();}); }}>切换主体</button>
+        <button onClick={() => {this.setState({chart: this.state.chart === 'pie' ? 'bar' : 'pie'}, () => {this.initChart();}); }}>切换图形</button>
       </div>
     );
   }
