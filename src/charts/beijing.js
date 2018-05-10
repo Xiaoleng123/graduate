@@ -202,8 +202,10 @@ export default class Beijing extends React.Component{
     return (
       <div style={{width: '100%', height: '100%', marginTop: '15px'}}>
         {chartDom}
-        <button onClick={() => {this.setState({major: this.state.major === 'business' ? 'type' : 'business'}, () => {this.initChart();}); }}>切换主体</button>
-        <button onClick={() => {this.setState({chart: this.state.chart === 'pie' ? 'bar' : 'pie'}, () => {this.initChart();}); }}>切换图形</button>
+        <button onClick={() => {this.setState({major: this.state.major === 'business'
+          ? 'type' : 'business'}, () => {this.initChart();}); }}>切换主体</button>
+        <button onClick={() => {this.setState({chart: this.state.chart === 'pie'
+        ? 'bar' : 'pie'}, () => {this.initChart();}); }}>切换图形</button>
       </div>
     );
   }

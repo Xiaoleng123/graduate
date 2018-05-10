@@ -178,7 +178,6 @@ export default class Compile extends React.Component{
   render() {
     const {
       business,
-      type,
     } = this.state;
     const select_1 = [<option key={99} value='北京'>全北京</option>];
     const select_2 = [<option key={99} value='武汉'>全武汉</option>];
@@ -190,13 +189,13 @@ export default class Compile extends React.Component{
     })
     return (
       <div style={{height: '80%', width: '80%'}}>
+        <div id="main" style={{height: '100%', width: '100%'}}></div>
         <select value={this.state.bj} onChange={e => {this.changeBusiness('bj', e)}}>
           {select_1}
         </select>
         <select value={this.state.wh} onChange={e => {this.changeBusiness('wh', e)}}>
           {select_2}
         </select>
-        <div id="main" style={{height: '100%', width: '100%'}}></div>
         
       </div>
     );
