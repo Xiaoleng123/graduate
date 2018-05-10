@@ -181,8 +181,9 @@ export default class Compile extends React.Component{
     } = this.state;
     const select_1 = [<option key={99} value='北京'>全北京</option>];
     const select_2 = [<option key={99} value='武汉'>全武汉</option>];
-    business.slice(0, ~~(business.length/2)).forEach((e, i) => {
-      select_1.push(<option key={i} value={e}>{e}</option>)
+    business.slice(0).forEach((e, i) => {
+      select_1.push(<option key={i} value={e}>{e}</option>);
+      if (i === ~~(business.length/2)) select_1.push(<option key="wh" disabled>下面是武汉</option>);
     })
     business.slice(~~(business.length/2)).forEach((e, i) => {
       select_2.push(<option key={i} value={e}>{e}</option>)
