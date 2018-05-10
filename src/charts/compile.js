@@ -8,6 +8,8 @@ import  'echarts/lib/chart/pie';
 // 引入提示框和标题组件
 import 'echarts/lib/component/tooltip';
 import 'echarts/lib/component/title';
+import 'echarts/lib/component/legend';
+import 'echarts/lib/component/grid';
 
 
 export default class Compile extends React.Component{
@@ -103,7 +105,7 @@ export default class Compile extends React.Component{
     }
     const option = {
       title: {
-        text: `${bj}与${wh}——商圈结构比较`,
+        text: `${bj}与${wh}——第三产业结构比较`,
         subtext: '数据来源-百度地图',
         sublink:'http://map.baidu.com/',
         x:'center'
@@ -111,6 +113,7 @@ export default class Compile extends React.Component{
       calculable : true,
       legend: {
         data: [bj, wh],
+        right: 50
       },
       tooltip: {
         trigger: 'axis',
