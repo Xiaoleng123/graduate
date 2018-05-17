@@ -61,6 +61,62 @@ export default class Compile extends React.Component{
     const myChart = echarts.init(document.getElementById('main'));
     const option = this.getOption();
     myChart.setOption(option, {notMerge: true});
+    const myChart_wh = echarts.init(document.getElementById('wh'));
+    const myChart_bj = echarts.init(document.getElementById('bj'));
+    const option_wh = this.getOption2('wh');
+    const option_bj = this.getOption2('bj');
+    myChart_wh.setOption(option_wh, {notMerge: true});
+    myChart_bj.setOption(option_bj, {notMerge: true});
+  }
+
+  getOption2 = (city) => {
+    const {
+      business_count,
+    } = this.state;
+    const name = city === 'wh' ? '武汉市商圈' : '北京市商圈';
+    const option = {
+      title: {
+        text: `${name}饼状图`,
+        subtext: '数据来源-百度地图',
+        sublink:'http://map.baidu.com/',
+      },
+      tooltip: {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+      },
+      legend: {
+        data: this.state.type,
+        orient: 'vertical',
+        right: 50
+      },
+      series: [{
+        name: name,
+        type: 'pie',
+        radius : '55%',
+        center: ['50%', '60%'],
+        data: (()=>{
+          const arr=[];
+          const business_count_1 = city === 'wh' ? business_count.slice(~~(business_count.length/2)) :
+            business_count.slice(0, ~~(business_count.length/2));
+          business_count_1.forEach((elem) => {
+            let i = 0;
+            for (let key in elem.value){
+              arr[i] !== undefined ? arr[i].value += elem.value[key] : arr[i] = {name: key, value: elem.value[key]};
+              i ++;
+            }
+          })
+          return arr;
+        })(),
+        itemStyle: {
+          emphasis: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
+        }
+      }]
+    };
+    return option;
   }
 
   getOption = () => {
@@ -83,7 +139,7 @@ export default class Compile extends React.Component{
       business_count.slice(0, ~~(business_count.length/2)).forEach((elem) => {
         let i = 0;
         for (let key in elem.value){
-          bjData[i] !== undefined ? bjData[i] += elem.value[key] : (bjData[i] = 0);
+          bjData[i] !== undefined ? bjData[i] += elem.value[key] : (bjData[i] = elem.value[key]);
           i ++;
         }
       })
@@ -98,7 +154,7 @@ export default class Compile extends React.Component{
       business_count.slice(~~(business_count.length/2)).forEach((elem) => {
         let i = 0;
         for (let key in elem.value){
-          whData[i] !== undefined ? whData[i] += elem.value[key] : (whData[i] = 0);
+          whData[i] !== undefined ? whData[i] += elem.value[key] : (whData[i] = elem.value[key]);
           i ++;
         }
       })
@@ -113,6 +169,7 @@ export default class Compile extends React.Component{
       calculable : true,
       legend: {
         data: [bj, wh],
+        orient: 'vertical',
         right: 50
       },
       tooltip: {
@@ -131,9 +188,9 @@ export default class Compile extends React.Component{
         {
           type: 'category',
           splitNumber: type.length,
-          axisLabel: {
-              rotate:45
-          },
+          // axisLabel: {
+          //     rotate:45
+          // },
           data: type,
           axisTick: {
               alignWithLabel: true
@@ -189,15 +246,16 @@ export default class Compile extends React.Component{
       select_2.push(<option key={i} value={e}>{e}</option>)
     })
     return (
-      <div style={{height: '80%', width: '80%'}}>
-        <div id="main" style={{height: '100%', width: '100%'}}></div>
+      <div style={{height: '100%', width: '100%'}}>
+        <div id="main" style={{display: 'inline-block', height: '50%', width: '50%'}}></div>
+        <div id="wh" style={{display: 'inline-block',height: '48%', width: '25%'}}></div>
+        <div id="bj" style={{display: 'inline-block',height: '48%', width: '25%'}}></div>
         <select value={this.state.bj} onChange={e => {this.changeBusiness('bj', e)}}>
           {select_1}
         </select>
         <select value={this.state.wh} onChange={e => {this.changeBusiness('wh', e)}}>
           {select_2}
         </select>
-        
       </div>
     );
   }
