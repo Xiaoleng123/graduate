@@ -8,6 +8,7 @@ import  'echarts/lib/chart/pie';
 // 引入提示框和标题组件
 import 'echarts/lib/component/tooltip';
 import 'echarts/lib/component/title';
+import 'echarts/lib/component/legend';
 
 export default class Wuhan extends React.Component{
   constructor(props) {
@@ -105,6 +106,11 @@ export default class Wuhan extends React.Component{
       tooltip: {
         trigger: 'item',
         formatter: "{a} <br/>{b} : {c} ({d}%)"
+      },
+      legend: {
+        data: this.state.type,
+        orient: 'vertical',
+        right: 50
       },
       series: [{
         name: e[major],
