@@ -15,7 +15,7 @@ export default class Wuhan extends React.Component{
     super(props);
     this.state = {
       business: [],
-      type: [],
+      type: ['餐馆', '服装店', '酒店', '银行', '公交站', '网吧'],
       business_count: [],
       type_count: [],
       chartData: [],
@@ -46,34 +46,40 @@ export default class Wuhan extends React.Component{
 
   formatData = (city) => {
     const data = this.state.chartData;
-    const business = [];
-    const type =[];
+    const type = this.state.type;
+    const data2 = [];
+    type.forEach(elem => {
+      data.forEach(ele => {
+        if (elem === ele.TYPE) {
+          data2.push(ele);
+        }
+      })
+    })
     const obj = {};
-    data.forEach((elem, i) => {
+    const business = [];
+    const business_count = [];
+    const type_count = [];
+    data2.forEach(elem => {
       if (!obj[elem.BUSINESS]) {
         business.push(elem.BUSINESS);
         obj[elem.BUSINESS] = {};
-        obj[elem.BUSINESS][elem.TYPE] = 1;
+        obj[elem.BUSINESS][elem.TYPE] = elem.TOTAL;
       } else {
-        !obj[elem.BUSINESS][elem.TYPE] ? obj[elem.BUSINESS][elem.TYPE] = 1 :
-          obj[elem.BUSINESS][elem.TYPE] += 1;
+        obj[elem.BUSINESS][elem.TYPE] = elem.TOTAL;
       }
       if (!obj[elem.TYPE]) {
-        type.push(elem.TYPE);
         obj[elem.TYPE] = {};
-        obj[elem.TYPE][elem.BUSINESS] = 1;
+        obj[elem.TYPE][elem.BUSINESS] = elem.TOTAL
       } else {
-        !obj[elem.TYPE][elem.BUSINESS] ? obj[elem.TYPE][elem.BUSINESS] = 1 :
-          obj[elem.TYPE][elem.BUSINESS] += 1;
+        obj[elem.TYPE][elem.BUSINESS] = elem.TOTAL
       }
     })
-    const business_count = [];
-    const type_count = [];
+    console.log(obj);
     for (let key in obj) {
       type.indexOf(key) >-1 ? type_count.push({type: key, value: obj[key]}) :
       business_count.push({business: key, value: obj[key]});
     }
-    this.setState({business, type, business_count, type_count}, () => {
+    this.setState({business, business_count, type_count}, () => {
       this.initChart();
       localStorage.setItem(city, JSON.stringify({business, type, business_count, type_count}));
     });

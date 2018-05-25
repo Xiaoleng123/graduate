@@ -71,7 +71,7 @@ const getData = async function(param) {
   const start = new Date().getTime();
   console.log(`get ${param} begin······`);
   const city = defineCity(param);
-  const data = await sequelize.query(`SELECT * FROM ${param} ORDER BY TYPE DESC`,
+  const data = await sequelize.query(`SELECT TYPE,BUSINESS,COUNT(*) AS TOTAL FROM ${param} GROUP BY TYPE,BUSINESS;`,
     { model: city });
   const end = new Date().getTime();
   console.log(`get ${param} completed,cost ${end-start}ms······`);
