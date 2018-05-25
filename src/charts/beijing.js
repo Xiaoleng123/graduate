@@ -163,7 +163,7 @@ export default class Beijing extends React.Component{
           type: 'category',
           splitNumber: e.value.length,
           axisLabel: {
-              rotate:45
+            rotate: major === 'type' ? 45 : 0
           },
           data: (()=>{
               const arr=[];

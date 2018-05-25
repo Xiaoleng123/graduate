@@ -21,8 +21,8 @@ export default class Compile extends React.Component{
       type_count: [],
       business_count: [],
       cityMap: {wuhan: '武汉', beijing: '北京'},
-      bj: '北京',
-      wh: '武汉'
+      bj: '北京商圈',
+      wh: '武汉商圈'
     };
   }
 
@@ -63,20 +63,21 @@ export default class Compile extends React.Component{
     myChart.setOption(option, {notMerge: true});
     const myChart_wh = echarts.init(document.getElementById('wh'));
     const myChart_bj = echarts.init(document.getElementById('bj'));
-    const option_wh = this.getOption2('wh');
-    const option_bj = this.getOption2('bj');
+    const option_wh = this.getOption_wh();
+    const option_bj = this.getOption_bj();
     myChart_wh.setOption(option_wh, {notMerge: true});
     myChart_bj.setOption(option_bj, {notMerge: true});
   }
 
-  getOption2 = (city) => {
+  getOption_wh = () => {
     const {
+      business,
       business_count,
+      wh,
     } = this.state;
-    const name = city === 'wh' ? '武汉市商圈' : '北京市商圈';
     const option = {
       title: {
-        text: `${name}饼状图`,
+        text: `${wh}饼状图`,
         subtext: '数据来源-百度地图',
         sublink:'http://map.baidu.com/',
       },
@@ -90,21 +91,84 @@ export default class Compile extends React.Component{
         right: 50
       },
       series: [{
-        name: name,
+        name: wh,
         type: 'pie',
         radius : '55%',
         center: ['50%', '60%'],
         data: (()=>{
           const arr=[];
-          const business_count_1 = city === 'wh' ? business_count.slice(~~(business_count.length/2)) :
-            business_count.slice(0, ~~(business_count.length/2));
-          business_count_1.forEach((elem) => {
-            let i = 0;
-            for (let key in elem.value){
-              arr[i] !== undefined ? arr[i].value += elem.value[key] : arr[i] = {name: key, value: elem.value[key]};
-              i ++;
+          if (wh !== '武汉商圈') {
+            const index = business.indexOf(wh);
+            const value = business_count[index].value;
+            for (let key in value){
+              arr.push({name: key, value: value[key]})
             }
-          })
+          } else {
+            business_count.slice(~~(business_count.length/2)).forEach((elem) => {
+              let i = 0;
+              for (let key in elem.value){
+                arr[i] !== undefined ? arr[i].value += elem.value[key] : arr[i] = {name: key, value: elem.value[key]};
+                i ++;
+              }
+            })
+          }
+          return arr;
+        })(),
+        itemStyle: {
+          emphasis: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
+        }
+      }]
+    };
+    return option;
+  }
+  getOption_bj = () => {
+    const {
+      business,
+      type,
+      business_count,
+      bj,
+    } = this.state;
+    const option = {
+      title: {
+        text: `${bj}饼状图`,
+        subtext: '数据来源-百度地图',
+        sublink:'http://map.baidu.com/',
+      },
+      tooltip: {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+      },
+      legend: {
+        data: this.state.type,
+        orient: 'vertical',
+        right: 50
+      },
+      series: [{
+        name: bj,
+        type: 'pie',
+        radius : '55%',
+        center: ['50%', '60%'],
+        data: (()=>{
+          const arr=[];
+          if (bj !== '北京商圈') {
+            const index = business.indexOf(bj);
+            const value = business_count[index].value;
+            for (let key in value){
+              arr.push({name: key, value: value[key]})
+            }
+          } else {
+            business_count.slice(0, ~~(business_count.length/2)).forEach((elem) => {
+              let i = 0;
+              for (let key in elem.value){
+                arr[i] !== undefined ? arr[i].value += elem.value[key] : arr[i] = {name: key, value: elem.value[key]};
+                i ++;
+              }
+            })
+          }
           return arr;
         })(),
         itemStyle: {
@@ -129,7 +193,7 @@ export default class Compile extends React.Component{
     } = this.state;
     const bjData = [];
     const whData = [];
-    if (bj !== '北京') {
+    if (bj !== '北京商圈') {
       const index = business.indexOf(bj);
       const value = business_count[index].value;
       type.forEach(e => {
@@ -144,7 +208,7 @@ export default class Compile extends React.Component{
         }
       })
     }
-    if (wh !== '武汉') {
+    if (wh !== '武汉商圈') {
       const index = business.indexOf(wh);
       const value = business_count[index].value;
       type.forEach(e => {
@@ -161,14 +225,14 @@ export default class Compile extends React.Component{
     }
     const option = {
       title: {
-        text: `${bj}与${wh}——第三产业结构比较`,
+        text: `${wh}与${bj}——第三产业结构比较`,
         subtext: '数据来源-百度地图',
         sublink:'http://map.baidu.com/',
         x:'center'
       },
       calculable : true,
       legend: {
-        data: [bj, wh],
+        data: [wh, bj],
         orient: 'vertical',
         right: 50
       },
@@ -204,17 +268,17 @@ export default class Compile extends React.Component{
       ],
       series: [
         {
+          name: wh,
+          type: 'bar',
+          barWidth: '30%',
+          data: whData,
+        },
+        {
           name: bj,
           type: 'bar',
           barWidth: '30%',
           data: bjData,
         },
-        {
-          name: wh,
-          type: 'bar',
-          barWidth: '30%',
-          data: whData,
-        }
       ]
     };
     return option;
@@ -236,8 +300,8 @@ export default class Compile extends React.Component{
     const {
       business,
     } = this.state;
-    const select_1 = [<option key={99} value='北京市'>全北京</option>];
-    const select_2 = [<option key={99} value='武汉市'>全武汉</option>];
+    const select_1 = [<option key={99} value='北京商圈'>全北京</option>];
+    const select_2 = [<option key={99} value='武汉商圈'>全武汉</option>];
     business.slice(0).forEach((e, i) => {
       select_1.push(<option key={i} value={e}>{e}</option>);
       if (i === ~~(business.length/2)) select_1.push(<option key="wh" disabled>下面是武汉</option>);
@@ -254,11 +318,11 @@ export default class Compile extends React.Component{
         <div id="main" style={{display: 'inline-block', height: '50%', width: '50%'}}></div>
         <div id="wh" style={{display: 'inline-block',height: '48%', width: '25%'}}></div>
         <div id="bj" style={{display: 'inline-block',height: '48%', width: '25%'}}></div>
-        <select value={this.state.bj} onChange={e => {this.changeBusiness('bj', e)}}>
-          {select_1}
-        </select>
         <select value={this.state.wh} onChange={e => {this.changeBusiness('wh', e)}}>
           {select_2}
+        </select>
+        <select value={this.state.bj} onChange={e => {this.changeBusiness('bj', e)}}>
+          {select_1}
         </select>
       </div>
     );
