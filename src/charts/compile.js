@@ -128,7 +128,6 @@ export default class Compile extends React.Component{
   getOption_bj = () => {
     const {
       business,
-      type,
       business_count,
       bj,
     } = this.state;
@@ -252,9 +251,6 @@ export default class Compile extends React.Component{
         {
           type: 'category',
           splitNumber: type.length,
-          // axisLabel: {
-          //     rotate:45
-          // },
           data: type,
           axisTick: {
               alignWithLabel: true
@@ -277,6 +273,24 @@ export default class Compile extends React.Component{
           name: bj,
           type: 'bar',
           barWidth: '30%',
+          data: bjData,
+        },
+        {
+          name: wh,
+          type: 'line',
+          lineStyle: {
+            color: '#675bba'
+          },
+          smooth: true,
+          data: whData,
+        },
+        {
+          name: bj,
+          type: 'line',
+          lineStyle: {
+            color: '#5793f3'
+          },
+          smooth: true,
           data: bjData,
         },
       ]

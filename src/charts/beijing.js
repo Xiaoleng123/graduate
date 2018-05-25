@@ -5,6 +5,8 @@ import echarts from 'echarts/lib/echarts';
 import  'echarts/lib/chart/bar';
 // 引入饼图
 import  'echarts/lib/chart/pie';
+// 引入饼图
+import  'echarts/lib/chart/line';
 // 引入提示框和标题组件
 import 'echarts/lib/component/tooltip';
 import 'echarts/lib/component/title';
@@ -194,7 +196,22 @@ export default class Beijing extends React.Component{
             }
             return arr;
           })(),
-        }
+        },
+        {
+          name: e[major],
+          type: 'line',
+          lineStyle: {
+            color: '#675bba'
+          },
+          smooth: true,
+          data: (()=>{
+            const arr=[];
+            for (let key in e.value) {
+              arr.push(e.value[key])
+            }
+            return arr;
+          })(),
+        },
       ]
     }
     return option;
