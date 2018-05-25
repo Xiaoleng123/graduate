@@ -279,7 +279,7 @@ export default class Compile extends React.Component{
           name: wh,
           type: 'line',
           lineStyle: {
-            color: '#675bba'
+            // color: '#675bba'
           },
           smooth: true,
           data: whData,
@@ -288,7 +288,7 @@ export default class Compile extends React.Component{
           name: bj,
           type: 'line',
           lineStyle: {
-            color: '#5793f3'
+            // color: '#5793f3'
           },
           smooth: true,
           data: bjData,
