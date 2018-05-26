@@ -107,7 +107,7 @@ export default class Beijing extends React.Component{
     chart === 'pie' ? 
     option = {
       title: {
-        text: `${e[major]}饼状图`,
+        text: `${e[major]}商圈结构饼状图`,
         subtext: '数据来源-百度地图',
         sublink:'http://map.baidu.com/',
       },
@@ -142,7 +142,7 @@ export default class Beijing extends React.Component{
       }]
     } : option = {
       title: {
-        text: `${e[major]}柱状图`,
+        text: `${e[major]}商圈结构柱状图`,
         subtext: '数据来源-百度地图',
         sublink:'http://map.baidu.com/',
         x:'center'

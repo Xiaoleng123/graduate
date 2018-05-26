@@ -273,6 +273,9 @@ export default class Compile extends React.Component{
           name: bj,
           type: 'bar',
           barWidth: '30%',
+          itemStyle: {
+            color: 'rgba(47,69,84,0.7)'
+          },
           data: bjData,
         },
         {
@@ -280,6 +283,7 @@ export default class Compile extends React.Component{
           type: 'line',
           lineStyle: {
             // color: '#675bba'
+            type: 'dotted'
           },
           smooth: true,
           data: whData,
@@ -289,6 +293,7 @@ export default class Compile extends React.Component{
           type: 'line',
           lineStyle: {
             // color: '#5793f3'
+            // type: 'dashed'
           },
           smooth: true,
           data: bjData,
