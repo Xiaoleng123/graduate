@@ -197,22 +197,22 @@ export default class Wuhan extends React.Component{
             return arr;
           })(),
         },
-        {
-          name: e[major],
-          type: 'line',
-          lineStyle: {
-            color: '#675bba'
-          },
-          smooth: true,
-          // smoothMonotone: 'x',
-          data: (()=>{
-            const arr=[];
-            for (let key in e.value) {
-              arr.push(e.value[key])
-            }
-            return arr;
-          })(),
-        },
+        // {
+        //   name: e[major],
+        //   type: 'line',
+        //   lineStyle: {
+        //     color: '#675bba'
+        //   },
+        //   smooth: true,
+        //   // smoothMonotone: 'x',
+        //   data: (()=>{
+        //     const arr=[];
+        //     for (let key in e.value) {
+        //       arr.push(e.value[key])
+        //     }
+        //     return arr;
+        //   })(),
+        // },
       ]
     }
     return option;

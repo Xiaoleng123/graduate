@@ -77,7 +77,7 @@ export default class Compile extends React.Component{
     } = this.state;
     const option = {
       title: {
-        text: `${wh}饼状图`,
+        text: `${wh}商圈结构饼状图`,
         subtext: '数据来源-百度地图',
         sublink:'http://map.baidu.com/',
       },
@@ -133,7 +133,7 @@ export default class Compile extends React.Component{
     } = this.state;
     const option = {
       title: {
-        text: `${bj}饼状图`,
+        text: `${bj}商圈结构饼状图`,
         subtext: '数据来源-百度地图',
         sublink:'http://map.baidu.com/',
       },
@@ -224,7 +224,7 @@ export default class Compile extends React.Component{
     }
     const option = {
       title: {
-        text: `${wh}与${bj}——第三产业结构比较`,
+        text: `${wh}与${bj}——商圈结构比较`,
         subtext: '数据来源-百度地图',
         sublink:'http://map.baidu.com/',
         x:'center'
