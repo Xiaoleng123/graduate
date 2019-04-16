@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import Wuhan from './charts/wuhan';
 import Beijing from './charts/beijing';
-import Compile from './charts/compile';
+import Compare from './charts/compare';
 
 import './App.less';
 const Home = () => (
@@ -19,13 +19,13 @@ const BasicExample = () => (
         <li><Link to="/">Home</Link></li>
         <li><Link to="/wuhan">Wuhan</Link></li>
         <li><Link to="/beijing">Beijing</Link></li>
-        <li><Link to="/compile">Compile</Link></li>
+        <li><Link to="/compare">Compare</Link></li>
       </ul>
       <div className="router-view">
-        <Route exact path="/" component={Home}/>
-        <Route path="/wuhan" component={Wuhan}/>
-        <Route path="/beijing" component={Beijing}/>
-        <Route path="/compile" component={Compile}/>
+        <Route exact path="/" component={Home} />
+        <Route path="/wuhan" component={Wuhan} />
+        <Route path="/beijing" component={Beijing} />
+        <Route path="/compare" component={Compare} />
       </div>
     </div>
   </Router>

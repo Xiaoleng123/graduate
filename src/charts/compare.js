@@ -2,9 +2,9 @@ import React from 'react';
 // 引入 ECharts 主模块
 import echarts from 'echarts/lib/echarts';
 // 引入柱状图
-import  'echarts/lib/chart/bar';
+import 'echarts/lib/chart/bar';
 // 引入饼图
-import  'echarts/lib/chart/pie';
+import 'echarts/lib/chart/pie';
 // 引入提示框和标题组件
 import 'echarts/lib/component/tooltip';
 import 'echarts/lib/component/title';
@@ -12,15 +12,15 @@ import 'echarts/lib/component/legend';
 import 'echarts/lib/component/grid';
 
 
-export default class Compile extends React.Component{
-  constructor(props) {
+export default class Compile extends React.Component {
+  constructor (props) {
     super(props);
     this.state = {
       type: [],
       business: [],
       type_count: [],
       business_count: [],
-      cityMap: {wuhan: '武汉', beijing: '北京'},
+      cityMap: { wuhan: '武汉', beijing: '北京' },
       bj: '北京商圈',
       wh: '武汉商圈'
     };
@@ -39,7 +39,7 @@ export default class Compile extends React.Component{
         this.mergeData(storage, type, business, type_count, business_count);
       }
     }
-    this.setState({type, business, type_count, business_count}, () => {
+    this.setState({ type, business, type_count, business_count }, () => {
       this.initChart();
     })
   }
@@ -60,13 +60,13 @@ export default class Compile extends React.Component{
   initChart = () => {
     const myChart = echarts.init(document.getElementById('main'));
     const option = this.getOption();
-    myChart.setOption(option, {notMerge: true});
+    myChart.setOption(option, { notMerge: true });
     const myChart_wh = echarts.init(document.getElementById('wh'));
     const myChart_bj = echarts.init(document.getElementById('bj'));
     const option_wh = this.getOption_wh();
     const option_bj = this.getOption_bj();
-    myChart_wh.setOption(option_wh, {notMerge: true});
-    myChart_bj.setOption(option_bj, {notMerge: true});
+    myChart_wh.setOption(option_wh, { notMerge: true });
+    myChart_bj.setOption(option_bj, { notMerge: true });
   }
 
   getOption_wh = () => {
@@ -79,7 +79,7 @@ export default class Compile extends React.Component{
       title: {
         text: `${wh}商圈结构饼状图`,
         subtext: '数据来源-百度地图',
-        sublink:'http://map.baidu.com/',
+        sublink: 'http://map.baidu.com/',
       },
       tooltip: {
         trigger: 'item',
@@ -93,22 +93,22 @@ export default class Compile extends React.Component{
       series: [{
         name: wh,
         type: 'pie',
-        radius : '55%',
+        radius: '55%',
         center: ['50%', '60%'],
-        data: (()=>{
-          const arr=[];
+        data: (() => {
+          const arr = [];
           if (wh !== '武汉商圈') {
             const index = business.indexOf(wh);
             const value = business_count[index].value;
-            for (let key in value){
-              arr.push({name: key, value: value[key]})
+            for (let key in value) {
+              arr.push({ name: key, value: value[key] })
             }
           } else {
-            business_count.slice(~~(business_count.length/2)).forEach((elem) => {
+            business_count.slice(~~(business_count.length / 2)).forEach((elem) => {
               let i = 0;
-              for (let key in elem.value){
-                arr[i] !== undefined ? arr[i].value += elem.value[key] : arr[i] = {name: key, value: elem.value[key]};
-                i ++;
+              for (let key in elem.value) {
+                arr[i] !== undefined ? arr[i].value += elem.value[key] : arr[i] = { name: key, value: elem.value[key] };
+                i++;
               }
             })
           }
@@ -135,7 +135,7 @@ export default class Compile extends React.Component{
       title: {
         text: `${bj}商圈结构饼状图`,
         subtext: '数据来源-百度地图',
-        sublink:'http://map.baidu.com/',
+        sublink: 'http://map.baidu.com/',
       },
       tooltip: {
         trigger: 'item',
@@ -149,22 +149,22 @@ export default class Compile extends React.Component{
       series: [{
         name: bj,
         type: 'pie',
-        radius : '55%',
+        radius: '55%',
         center: ['50%', '60%'],
-        data: (()=>{
-          const arr=[];
+        data: (() => {
+          const arr = [];
           if (bj !== '北京商圈') {
             const index = business.indexOf(bj);
             const value = business_count[index].value;
-            for (let key in value){
-              arr.push({name: key, value: value[key]})
+            for (let key in value) {
+              arr.push({ name: key, value: value[key] })
             }
           } else {
-            business_count.slice(0, ~~(business_count.length/2)).forEach((elem) => {
+            business_count.slice(0, ~~(business_count.length / 2)).forEach((elem) => {
               let i = 0;
-              for (let key in elem.value){
-                arr[i] !== undefined ? arr[i].value += elem.value[key] : arr[i] = {name: key, value: elem.value[key]};
-                i ++;
+              for (let key in elem.value) {
+                arr[i] !== undefined ? arr[i].value += elem.value[key] : arr[i] = { name: key, value: elem.value[key] };
+                i++;
               }
             })
           }
@@ -199,11 +199,11 @@ export default class Compile extends React.Component{
         bjData.push(value[e] || 0);
       })
     } else {
-      business_count.slice(0, ~~(business_count.length/2)).forEach((elem) => {
+      business_count.slice(0, ~~(business_count.length / 2)).forEach((elem) => {
         let i = 0;
-        for (let key in elem.value){
+        for (let key in elem.value) {
           bjData[i] !== undefined ? bjData[i] += elem.value[key] : (bjData[i] = elem.value[key]);
-          i ++;
+          i++;
         }
       })
     }
@@ -214,11 +214,11 @@ export default class Compile extends React.Component{
         whData.push(value[e] || 0);
       })
     } else {
-      business_count.slice(~~(business_count.length/2)).forEach((elem) => {
+      business_count.slice(~~(business_count.length / 2)).forEach((elem) => {
         let i = 0;
-        for (let key in elem.value){
+        for (let key in elem.value) {
           whData[i] !== undefined ? whData[i] += elem.value[key] : (whData[i] = elem.value[key]);
-          i ++;
+          i++;
         }
       })
     }
@@ -226,10 +226,10 @@ export default class Compile extends React.Component{
       title: {
         text: `${wh}与${bj}——商圈结构比较`,
         subtext: '数据来源-百度地图',
-        sublink:'http://map.baidu.com/',
-        x:'center'
+        sublink: 'http://map.baidu.com/',
+        x: 'center'
       },
-      calculable : true,
+      calculable: true,
       legend: {
         data: [wh, bj],
         orient: 'vertical',
@@ -237,8 +237,8 @@ export default class Compile extends React.Component{
       },
       tooltip: {
         trigger: 'axis',
-        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-          type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+          type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
         }
       },
       grid: {
@@ -253,7 +253,7 @@ export default class Compile extends React.Component{
           splitNumber: type.length,
           data: type,
           axisTick: {
-              alignWithLabel: true
+            alignWithLabel: true
           }
         }
       ],
@@ -311,11 +311,11 @@ export default class Compile extends React.Component{
     });
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.getData(['beijing', 'wuhan']);
   }
 
-  render() {
+  render () {
     const {
       business,
     } = this.state;
@@ -323,24 +323,24 @@ export default class Compile extends React.Component{
     const select_2 = [<option key={99} value='武汉商圈'>全武汉</option>];
     business.slice(0).forEach((e, i) => {
       select_1.push(<option key={i} value={e}>{e}</option>);
-      if (i === ~~(business.length/2)) select_1.push(<option key="wh" disabled>下面是武汉</option>);
+      if (i === ~~(business.length / 2)) select_1.push(<option key="wh" disabled>下面是武汉</option>);
     })
     // business.slice(~~(business.length/2)).forEach((e, i) => {
     //   select_2.push(<option key={i} value={e}>{e}</option>)
     // })
     business.slice(0).forEach((e, i) => {
       select_2.push(<option key={i} value={e}>{e}</option>);
-      if (i === ~~(business.length/2)) select_2.push(<option key="wh" disabled>下面是武汉</option>);
+      if (i === ~~(business.length / 2)) select_2.push(<option key="wh" disabled>下面是武汉</option>);
     })
     return (
-      <div style={{height: '100%', width: '100%'}}>
-        <div id="main" style={{display: 'inline-block', height: '50%', width: '50%'}}></div>
-        <div id="wh" style={{display: 'inline-block',height: '48%', width: '25%'}}></div>
-        <div id="bj" style={{display: 'inline-block',height: '48%', width: '25%'}}></div>
-        <select value={this.state.wh} onChange={e => {this.changeBusiness('wh', e)}}>
+      <div style={{ height: '100%', width: '100%' }}>
+        <div id="main" style={{ display: 'inline-block', height: '50%', width: '50%' }}></div>
+        <div id="wh" style={{ display: 'inline-block', height: '48%', width: '25%' }}></div>
+        <div id="bj" style={{ display: 'inline-block', height: '48%', width: '25%' }}></div>
+        <select value={this.state.wh} onChange={e => { this.changeBusiness('wh', e) }}>
           {select_2}
         </select>
-        <select value={this.state.bj} onChange={e => {this.changeBusiness('bj', e)}}>
+        <select value={this.state.bj} onChange={e => { this.changeBusiness('bj', e) }}>
           {select_1}
         </select>
       </div>

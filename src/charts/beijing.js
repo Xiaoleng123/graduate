@@ -13,7 +13,7 @@ import 'echarts/lib/component/title';
 import 'echarts/lib/component/legend';
 
 export default class Beijing extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       business: [],
@@ -217,10 +217,10 @@ export default class Beijing extends React.Component {
     return option;
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.reqData('beijing');
   }
-  render() {
+  render () {
     const major = this.state.major;
     let count = this.state[major].length;
     const chartDom = [];
